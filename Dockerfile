@@ -1,7 +1,8 @@
-# Updated on 2019-04-28
+# Updated on 2019-04-30
+# Debian 9.8 (stretch) slim
 # R. Solano <ramon.solano@gmail.com>
 
-FROM debian:buster-slim
+FROM debian:stretch-slim
 
 # tzdata settings (to avoid install-time questions)
 ENV TZ_AREA America
