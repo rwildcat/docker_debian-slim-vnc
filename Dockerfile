@@ -1,4 +1,4 @@
-# Updated on 2019-04-30
+# Updated on 2019-05-01
 # Debian 9.8 (stretch) slim
 # R. Solano <ramon.solano@gmail.com>
 
@@ -9,9 +9,18 @@ ENV TZ_AREA America
 ENV TZ_CITY Mexico_City
 
 RUN ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
-	&& apt-get update \
-	&& apt-get -y install sudo supervisor openssh-server \
-	xvfb x11vnc xfce4 xfce4-terminal  \
+	&& export DEBIAN_FRONTEND=noninteractive \
+	&& apt-get update -q \
+	&& apt-get install -qy sudo supervisor openssh-server apt-utils \
+	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin \
+	&& apt-get remove -qy gnome-icon-theme gnome-themes-standard \
+	gnome-accessibility-themes gnome-themes-standard-data \
+	pulseaudio pulseaudio-utils \
+	xserver-xorg-input-wacom xserver-xorg-legacy  xserver-xorg-video-amdgpu \
+	xserver-xorg-video-ati xserver-xorg-video-fbdev xserver-xorg-video-intel \
+	xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-radeon \
+	xserver-xorg-video-vesa xserver-xorg-video-vmware \
+	&& apt autoremove -qy \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 

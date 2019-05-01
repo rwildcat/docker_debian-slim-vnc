@@ -1,6 +1,6 @@
 # Debian (slim) VNC
 
-A lightweight (590 MB) Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
+A lightweight (495 MB) Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
 
 *Ramon Solano <ramon.solano@gmail.com>*
 
@@ -91,7 +91,9 @@ where:
  ## Container usage
  
 1. First run the container as described above.
+
 2. Connect to the running host (`localhost` if running in your computer):
+
 	* Using VNC: 
 
 		Connect to specified LVNCPORT (e.g. `localhost:0` or `localhost:5900`)
