@@ -2,9 +2,9 @@
 
 A lightweight (495 MB) Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
 
-*Ramon Solano <ramon.solano@gmail.com>*
+*Ramon Solano <<ramon.solano@gmail.com>>*
 
-**Last update**: Apr/30/2019    
+**Last update**: May/03/2019    
 **Base image**: Debian 9.8 (stretch) slim
 
 ## Main packages
@@ -30,7 +30,7 @@ $ docker build -t rsolano/debian-slim-vnc .
 ## To run container
 
 ```sh
-$ docker run [-it] [--rm] [--detach] [-h <HOSTNAME] -p <LVNCPORT>:5900 -p <LSSHPORT>:22 [-e XRES=1280x800x24] rsolano/debian-slim-vnc
+$ docker run [-it] [--rm] [--detach] [-h <HOSTNAME] -p <LVNCPORT>:5900 -p <LSSHPORT>:22 [-e XRES=1280x800x24] [-v LDIR:DIR] rsolano/debian-slim-vnc
 ```
 
 where:
@@ -41,6 +41,8 @@ where:
 
 * `XRES`: Screen resolution and color depth.
 
+* `LDIR:DIR`: Local directory to mount on container. `LDIR` is the local directory to export; `DIR` is the target dir on the container.  Both sholud be specified as absolute paths. For example: `-v $HOME/worskpace:/home/debian/workspace`.
+
 ### Examples
 
 * Run image, keep terminal open (interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222:
@@ -49,10 +51,10 @@ where:
 	$ docker run -it --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
 	```
 
-* Run image, keep *console* open (non-interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222:
+* Run image, keep *console* open (non-interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace`:
 
 	```sh
-	$ docker run --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
+	$ docker run --rm -p 5900:5900 -p 2222:22 -v $HOME/workspace:/home/debian/workspace rsolano/debian-slim-vnc
 	```
 
 * Run image, detach to background and keep running in memory (control returns to user immediately); map VNC to 5900 and SSH to 2222; change screen resolution to 1200x700x24
@@ -136,7 +138,3 @@ where:
 	directory = /home/debian
 	user=debian
 	priority=300
-
-## To Do
-
-* Add volumes

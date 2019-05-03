@@ -1,8 +1,8 @@
-# Updated on 2019-05-01
+# Updated on 2019-05-03
 # Debian 9.8 (stretch) slim
 # R. Solano <ramon.solano@gmail.com>
 
-FROM debian:stretch-slim
+FROM debian:9.8-slim
 
 # tzdata settings (to avoid install-time questions)
 ENV TZ_AREA America
@@ -21,6 +21,7 @@ RUN ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-radeon \
 	xserver-xorg-video-vesa xserver-xorg-video-vmware \
 	&& apt autoremove -qy \
+	&& apt-get --fix-broken install \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
