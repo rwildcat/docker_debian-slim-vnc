@@ -4,8 +4,8 @@ A lightweight (495 MB) Linux workstation based on [Debian](https://hub.docker.co
 
 *Ramon Solano <<ramon.solano@gmail.com>>*
 
-**Last update**: May/03/2019    
-**Base image**: Debian 9.8 (stretch) slim
+**Last update**: May/09/2019    
+**Base image**: Debian 9.9 (stretch) slim
 
 ## Main packages
 

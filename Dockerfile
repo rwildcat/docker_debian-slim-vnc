@@ -1,18 +1,21 @@
-# Updated on 2019-05-03
-# Debian 9.8 (stretch) slim
+# Updated on 2019-09-03
+# Debian 9.9 (stretch) slim
 # R. Solano <ramon.solano@gmail.com>
 
-FROM debian:9.8-slim
+FROM debian:9.9-slim
 
 # tzdata settings (to avoid install-time questions)
 ENV TZ_AREA America
 ENV TZ_CITY Mexico_City
 
+# update and install software
 RUN ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	&& export DEBIAN_FRONTEND=noninteractive \
 	&& apt-get update -q \
 	&& apt-get install -qy sudo supervisor openssh-server apt-utils \
 	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin \
+	\
+	# keep it slim
 	&& apt-get remove -qy gnome-icon-theme gnome-themes-standard \
 	gnome-accessibility-themes gnome-themes-standard-data \
 	pulseaudio pulseaudio-utils \
@@ -20,6 +23,8 @@ RUN ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	xserver-xorg-video-ati xserver-xorg-video-fbdev xserver-xorg-video-intel \
 	xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-radeon \
 	xserver-xorg-video-vesa xserver-xorg-video-vmware \
+	\
+	# cleanup and fix
 	&& apt autoremove -qy \
 	&& apt-get --fix-broken install \
 	&& apt-get clean \
