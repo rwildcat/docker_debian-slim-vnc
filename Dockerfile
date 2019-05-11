@@ -1,5 +1,5 @@
-# Updated on 2019-09-03
-# Debian 9.9 (stretch) slim
+# Updated on 2019-05-11
+# Debian 9.9 (stretch-20190506-slim)
 # R. Solano <ramon.solano@gmail.com>
 
 FROM debian:9.9-slim

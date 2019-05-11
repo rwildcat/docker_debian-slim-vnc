@@ -4,8 +4,9 @@ A lightweight (495 MB) Linux workstation based on [Debian](https://hub.docker.co
 
 *Ramon Solano <<ramon.solano@gmail.com>>*
 
-**Last update**: May/09/2019    
-**Base image**: Debian 9.9 (stretch) slim
+**Last update**: May/11/2019    
+**Base image**: Debian 9.9 (stretch-20190506-slim)
+
 
 ## Main packages
 
@@ -24,6 +25,11 @@ User/pwd:
 ## To build from `Dockerfile`
 
 ```sh
+# clone git repository
+$ git clone https://github.com/rwildcat/docker_debian-slim-vnc.git
+
+# build image
+$ cd docker_debian-slim-vnc
 $ docker build -t rsolano/debian-slim-vnc .
 ```
 
