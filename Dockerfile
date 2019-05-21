@@ -1,16 +1,19 @@
-# Updated on 2019-05-11
-# Debian 9.9 (stretch-20190506-slim)
+# Updated on 2019-20-13
 # R. Solano <ramon.solano@gmail.com>
 
 FROM debian:9.9-slim
 
-# tzdata settings (to avoid install-time questions)
+# default screen size
+ENV XRES=1280x800x24
+
+# tzdata settings
 ENV TZ_AREA America
 ENV TZ_CITY Mexico_City
 
+
 # update and install software
-RUN ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
-	&& export DEBIAN_FRONTEND=noninteractive \
+RUN export DEBIAN_FRONTEND=noninteractive  \
+	&& ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	&& apt-get update -q \
 	&& apt-get install -qy sudo supervisor openssh-server apt-utils \
 	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin \
@@ -20,12 +23,12 @@ RUN ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	gnome-accessibility-themes gnome-themes-standard-data \
 	pulseaudio pulseaudio-utils \
 	xserver-xorg-input-wacom xserver-xorg-legacy  xserver-xorg-video-amdgpu \
-	xserver-xorg-video-ati xserver-xorg-video-fbdev xserver-xorg-video-intel \
+	xserver-xorg-video-ati xserver-xorg-video-intel \
 	xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-radeon \
 	xserver-xorg-video-vesa xserver-xorg-video-vmware \
 	\
 	# cleanup and fix
-	&& apt autoremove -qy \
+	&& apt-get autoremove -y \
 	&& apt-get --fix-broken install \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
@@ -39,11 +42,12 @@ RUN echo "root:debian" | /usr/sbin/chpasswd \
     && echo "debian:debian" | /usr/sbin/chpasswd \
     && echo "debian    ALL=(ALL) ALL" >> /etc/sudoers 
 
-# default screen size
-ENV XRES=1280x800x24
-
-# add my config files
+# add my sys config files
 ADD etc /etc
+
+# and my personal config files
+ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
+RUN chown -R debian:debian /home/debian/.config
 
 # ports
 EXPOSE 22 5900

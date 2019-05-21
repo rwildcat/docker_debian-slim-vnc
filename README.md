@@ -1,11 +1,11 @@
 # Debian (slim) VNC
 
-A lightweight (495 MB) Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
+A lightweight (~ 500 MB) Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
 
-*Ramon Solano <<ramon.solano@gmail.com>>*
+*Ramon Solano (<ramon.solano@gmail.com>)*
 
-**Last update**: May/11/2019    
-**Base image**: Debian 9.9 (stretch-20190506-slim)
+**Last update**: May/20/2019    
+**Base image**: Debian 9.9
 
 
 ## Main packages
@@ -22,7 +22,7 @@ User/pwd:
 * root / debian
 * debian / debian (sudoer)
 
-## To build from `Dockerfile`
+## To build from `Dockerfile` (optional)
 
 ```sh
 # clone git repository
@@ -35,8 +35,10 @@ $ docker build -t rsolano/debian-slim-vnc .
 
 ## To run container
 
+The image will be downloaded to your local image repository if it does not previously exist.
+
 ```sh
-$ docker run [-it] [--rm] [--detach] [-h <HOSTNAME] -p <LVNCPORT>:5900 -p <LSSHPORT>:22 [-e XRES=1280x800x24] [-v LDIR:DIR] rsolano/debian-slim-vnc
+$ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-v LDIR:DIR] rsolano/debian-slim-vnc
 ```
 
 where:
