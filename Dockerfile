@@ -10,7 +10,6 @@ ENV XRES=1280x800x24
 ENV TZ_AREA America
 ENV TZ_CITY Mexico_City
 
-
 # update and install software
 RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
@@ -45,18 +44,19 @@ RUN echo "root:debian" | /usr/sbin/chpasswd \
 # add my sys config files
 ADD etc /etc
 
-# and my personal config files
+# customizations
+
+# personal config files
 ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
 RUN chown -R debian:debian /home/debian/.config
 
-# ports
-EXPOSE 22 5900
-
-# customizations
 # enable user aliases
 RUN cd /home/debian \
 	&& sed 's/#alias/alias/'< .bashrc > .bashrc \
 	&& echo "alias lla='ls -al'" >> .bashrc
+
+# ports
+EXPOSE 22 5900
 
 # default command
 CMD ["/usr/bin/supervisord","-c","/etc/supervisord.conf"]
