@@ -1,10 +1,10 @@
 # Debian (slim) VNC
 
-A lightweight (~ 500 MB) Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
+A lightweight (539 MB) personal Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
 
-*Ramon Solano (<ramon.solano@gmail.com>)*
+*Ramon Solano (<ramon.solano at gmail.com>)*
 
-**Last update**: May/20/2019    
+**Last update**: May/26/2019    
 **Base image**: Debian 9.9
 
 
@@ -22,7 +22,9 @@ User/pwd:
 * root / debian
 * debian / debian (sudoer)
 
-## To build from `Dockerfile` (optional)
+## To build the image from the `Dockerfile` (optional)
+
+If you want to customize the image or use it for creating a new one, you can download (clone) it from the [corresponding github repository](https://github.com/rwildcat/docker_debian-slim-vnc). 
 
 ```sh
 # clone git repository
@@ -33,9 +35,17 @@ $ cd docker_debian-slim-vnc
 $ docker build -t rsolano/debian-slim-vnc .
 ```
 
-## To run container
+Otherwise, you can *pull it* from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc):
 
-The image will be downloaded to your local image repository if it does not previously exist.
+```
+$ docker pull rsolano/debian-slim-vnc
+```
+
+**NOTE:** If yu run the image without downloading it first (*e.g.* `$docker run ..`), Docker will *pull it* from the docker repository for you if it does not exist in your local image repository.
+
+## To run the container
+
+To run the container, you can just issue the `$ docker run `   command. The image will be first *pulled* if it required:
 
 ```sh
 $ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-v LDIR:DIR] rsolano/debian-slim-vnc
@@ -53,23 +63,59 @@ where:
 
 ### Examples
 
-* Run image, keep terminal open (interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222:
+* Run image, keep terminal open (`-it` : interactive terminal session); remove container from memory once finished the container (`--rm`); map VNC to 5900 (`-p 5900:5900`) and SSH to 2222 (`-p 2222:22`):
 
 	```sh
 	$ docker run -it --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
 	```
 
-* Run image, keep *console* open (non-interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace`:
+* Run image, keep *console* open (non-interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace` (`-v $HOME/...`):
 
 	```sh
 	$ docker run --rm -p 5900:5900 -p 2222:22 -v $HOME/workspace:/home/debian/workspace rsolano/debian-slim-vnc
 	```
 
-* Run image, detach to background and keep running in memory (control returns to user immediately); map VNC to 5900 and SSH to 2222; change screen resolution to 1200x700x24
+* Run image, detach to background (`--detach`, or just `-d`) and keep running in memory (control returns to user immediately); map VNC to 5900 and SSH to 2222; change screen resolution to 1200x700x24 (`XRES=...`)
 
 	```sh
 	$ docker run --detach -p 5900:5900 -p 2222:22 -e XRES=1200x700x24 rsolano/debian-slim-vnc
 	```
+
+#### To run a ***secured*** VNC session
+
+This container is intended to be used as a *personal* graphic workstation, running in your local Docker engine. For this reason, no encryption for VNC is provided. 
+
+If you need to have an encrypted connection as for example for running this image in a remote host (*e.g.* AWS, Google Cloud, etc.), the VNC stream can be encrypted through a SSH connection:
+
+```sh
+$ ssh [-p SSHPORT] [-f] -L 5900:REMOTE:5900 debian@REMOTE sleep 60
+```
+where:
+
+* `SSHPORT`: SSH port specified when container was launched. If not specified, port 22 is used.
+
+* `-f`: Request SSH to go to background afte the command is issued
+
+* `REMOTE`: IP or qualified name for your remote container
+
+This example assume the SSH connection will be terminated after 60 seconds if no VNC connection is detected, or just after the VNC connection was finished.
+
+EXAMPLES:
+
+* Establish a secured VNC session to the remote host 140.172.18.21, keep open a SSH terminal to the remote host. Map remote 5900 port to local 5900 port. Assume remote SSH port is 22:
+
+	```sh
+	$ ssh -L 5900:140.172.18.21:5900 debian@140.172.18.21
+	```
+
+* As before, but do not keep a SSH session open, but send the connecction to the background. End SSH channel if no VNC connection is made in 60 s, or after the VNC session ends:
+
+	```sh
+	$ ssh -f -L 5900:140.172.18.21:5900 debian@140.172.18.21 sleep 60
+	```
+
+
+
 
 ## To stop container
 

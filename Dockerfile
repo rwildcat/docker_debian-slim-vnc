@@ -1,4 +1,3 @@
-# Updated on 2019-20-13
 # R. Solano <ramon.solano@gmail.com>
 
 FROM debian:9.9-slim
@@ -15,10 +14,10 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	&& apt-get update -q \
 	&& apt-get install -qy sudo supervisor openssh-server apt-utils \
-	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin \
+	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin xscreensaver \
 	\
 	# keep it slim
-	&& apt-get remove -qy gnome-icon-theme gnome-themes-standard \
+	&& apt-get remove -qy light-locker gnome-icon-theme gnome-themes-standard \
 	gnome-accessibility-themes gnome-themes-standard-data \
 	pulseaudio pulseaudio-utils \
 	xserver-xorg-input-wacom xserver-xorg-legacy  xserver-xorg-video-amdgpu \
@@ -48,7 +47,8 @@ ADD etc /etc
 
 # personal config files
 ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
-RUN chown -R debian:debian /home/debian/.config
+ADD config/xscreensaver /home/debian/.xscreensaver
+RUN chown -R debian:debian /home/debian/.config /home/debian/.xscreensaver
 
 # enable user aliases
 RUN cd /home/debian \
