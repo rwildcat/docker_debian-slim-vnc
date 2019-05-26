@@ -114,7 +114,7 @@ EXAMPLES:
 	$ ssh -f -L 5900:140.172.18.21:5900 debian@140.172.18.21 sleep 60
 	```
 
-
+Once VNC is tunneled through SSH, you can connect your VNC viewer to you specified localhot port (*e.g.* port 5900 as in this examples).
 
 
 ## To stop container
