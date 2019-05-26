@@ -4,7 +4,7 @@ A lightweight (539 MB) personal Linux workstation based on [Debian](https://hub.
 
 *Ramon Solano (<ramon.solano at gmail.com>)*
 
-**Last update**: May/26/2019    
+**Last update**: May/26/2019     
 **Base image**: Debian 9.9
 
 
