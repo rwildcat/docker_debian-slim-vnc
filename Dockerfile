@@ -13,7 +13,7 @@ ENV TZ_CITY Mexico_City
 RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	&& apt-get update -q \
-	&& apt-get install -qy sudo supervisor openssh-server apt-utils \
+	&& apt-get install -qy sudo supervisor vim openssh-server apt-utils \
 	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin xscreensaver \
 	\
 	# keep it slim
