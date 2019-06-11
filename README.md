@@ -1,11 +1,11 @@
 # Debian (slim) VNC
 
-A lightweight (539 MB) personal Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
+A lightweight (569 MB) personal Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
 
 *Ramon Solano (<ramon.solano at gmail.com>)*
 
-**Last update**: May/26/2019     
-**Base image**: Debian 9.9
+**Last update**: Jun/11/2019     
+**Base image**: Debian 9.9 (stretch-20190610)
 
 
 ## Main packages
