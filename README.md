@@ -1,11 +1,11 @@
 # Debian (slim) VNC
 
-A lightweight (569 MB) personal Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
+A lightweight (631 MB) personal Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
 
 *Ramon Solano (<ramon.solano at gmail.com>)*
 
-**Last update**: Jun/11/2019     
-**Base image**: Debian 9.9 (stretch-20190610)
+**Last update**: Aug/15/2019     
+**Base image**: Debian 10.0 (buster-20190812-slim)
 
 
 ## Main packages
@@ -22,9 +22,27 @@ User/pwd:
 * root / debian
 * debian / debian (sudoer)
 
+## To run the image
+
+1. Manually download it (*pull it*) from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc):
+
+   ```sh
+   $ docker pull rsolano/debian-slim-vnc
+   ```
+
+2. Run the container (the image will be *pulled* first if not previously downloaded).
+
+	For example, to run an ephemeral VNC session:
+
+	```sh
+   $ docker run --rm -p 5900:5900 rsolano/debian-slim-vnc
+   ```
+
+
+
 ## To build the image from the `Dockerfile` (optional)
 
-If you want to customize the image or use it for creating a new one, you can download (clone) it from the [corresponding github repository](https://github.com/rwildcat/docker_debian-slim-vnc). 
+If you want to customize the image or use it for creating a new one based on this configuration, you can download (*clone*) the full image files from the [corresponding github repository](https://github.com/rwildcat/docker_debian-slim-vnc). 
 
 ```sh
 # clone git repository
@@ -34,14 +52,6 @@ $ git clone https://github.com/rwildcat/docker_debian-slim-vnc.git
 $ cd docker_debian-slim-vnc
 $ docker build -t rsolano/debian-slim-vnc .
 ```
-
-Otherwise, you can *pull it* from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc):
-
-```
-$ docker pull rsolano/debian-slim-vnc
-```
-
-**NOTE:** If yu run the image without downloading it first (*e.g.* `$docker run ..`), Docker will *pull it* from the docker repository for you if it does not exist in your local image repository.
 
 ## To run the container
 
@@ -63,13 +73,13 @@ where:
 
 ### Examples
 
-* Run image, keep terminal open (`-it` : interactive terminal session); remove container from memory once finished the container (`--rm`); map VNC to 5900 (`-p 5900:5900`) and SSH to 2222 (`-p 2222:22`):
+* Run the image, remove container from memory once finished the container (`--rm`); map VNC port to 5900 (`-p 5900:5900`) and SSH port to 2222 (`-p 2222:22`):
 
 	```sh
-	$ docker run -it --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
+	$ docker run --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
 	```
 
-* Run image, keep *console* open (non-interactive terminal session); remove container from memory once finished the container; map VNC to 5900 and SSH to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace` (`-v $HOME/...`):
+* Run image, remove container from memory once finished the container; map VNC port to 5900 and SSH port to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace` (`-v $HOME/...`):
 
 	```sh
 	$ docker run --rm -p 5900:5900 -p 2222:22 -v $HOME/workspace:/home/debian/workspace rsolano/debian-slim-vnc

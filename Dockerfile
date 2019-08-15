@@ -1,6 +1,6 @@
 # R. Solano <ramon.solano@gmail.com>
 
-FROM debian:9.9-slim
+FROM debian:10.0-slim
 
 # default screen size
 ENV XRES=1280x800x24
