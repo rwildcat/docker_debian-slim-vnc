@@ -1,16 +1,15 @@
 # Debian (slim) VNC
 
-A lightweight (631 MB) personal Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC and SSH services.
+A lightweight (631 MB) graphical Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC (Xfce4) and SSH services.
 
 *Ramon Solano (<ramon.solano at gmail.com>)*
 
-**Last update**: Aug/15/2019     
-**Base image**: Debian 10.0 (buster-20190812-slim)
+**Last update**: Aug/16/2019     
+**Base image**: Debian 10.0 slim (buster-20190812)
 
 
 ## Main packages
 
-* xvfd    : X virtual framebuffer (in-memory X display server)
 * xfce4   : Graphic desktop environment
 * x11vnc  : X vnc server
 * sshd    : SSH server
@@ -22,9 +21,9 @@ User/pwd:
 * root / debian
 * debian / debian (sudoer)
 
-## To run the image
+## Synopsis
 
-1. Manually download it (*pull it*) from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc):
+1. Download (*pull*) the image from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc) (optional):
 
    ```sh
    $ docker pull rsolano/debian-slim-vnc
@@ -38,6 +37,11 @@ User/pwd:
    $ docker run --rm -p 5900:5900 rsolano/debian-slim-vnc
    ```
 
+3. Use a VNC Viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)) to connect to the host server (usually the `localhost`), port 5900:
+
+	```
+	localhost:5900
+	```
 
 
 ## To build the image from the `Dockerfile` (optional)
