@@ -1,11 +1,11 @@
 # Debian (slim) VNC
 
-A lightweight (631 MB) graphical Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides VNC (Xfce4) and SSH services.
+A lightweight (631 MB) graphical Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides a graphical desktop (Xfce4) via VNC, and SSH.
 
-*Ramon Solano (<ramon.solano at gmail.com>)*
+*Ramon Solano (ramon.solano at gmail.com)*
 
-**Last update**: Aug/16/2019     
-**Base image**: Debian 10.0 slim (buster-20190812)
+**Last update**: Feb/17/2020.  
+**Base image**: Debian 10.2 slim (buster-20200130)
 
 
 ## Main packages
@@ -31,20 +31,20 @@ User/pwd:
 
 2. Run the container (the image will be *pulled* first if not previously downloaded).
 
-	For example, to run an ephemeral VNC session:
+	For example, to run an ephemeral VNC session (port 5900):
 
 	```sh
    $ docker run --rm -p 5900:5900 rsolano/debian-slim-vnc
    ```
-
-3. Use a VNC Viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)) to connect to the host server (usually the `localhost`), port 5900:
+   
+  3. Connect to the virtual computer using a VNC viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)), port 5900. As the remote VNC port (5900) was forwarded to the local host (`-p 5900:5900`), you can connect to the lcoalhost:
 
 	```
 	localhost:5900
 	```
 
 
-## To build the image from the `Dockerfile` (optional)
+## To locally build the image from the `Dockerfile` (optional, for developers only)
 
 If you want to customize the image or use it for creating a new one based on this configuration, you can download (*clone*) the full image files from the [corresponding github repository](https://github.com/rwildcat/docker_debian-slim-vnc). 
 
@@ -59,7 +59,9 @@ $ docker build -t rsolano/debian-slim-vnc .
 
 ## To run the container
 
-To run the container, you can just issue the `$ docker run `   command. The image will be first *pulled* if it required:
+To run the container, you can just issue the `$ docker run <image-name>` command. The image will be first *pulled* if it not previously done:
+
+**Full syntax:**
 
 ```sh
 $ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-v LDIR:DIR] rsolano/debian-slim-vnc
@@ -67,9 +69,9 @@ $ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:
 
 where:
 
-* `LVNCPORT`: Localhost VNC port to connect to (e.g. 5900 for display :0).
+* `LVNCPORT`: Localhost VNC port for attaching remote VNC port 5900.
 
-* `LSSHPORT`: local SSH port to connect to (e.g. 2222, as *well known ports* (those below 1024) may be reserved by your system).
+* `LSSHPORT`: local SSH port for attaching remote SSH port 22. You may need to use a *non reserved* port such as port 2222. *Well known ports* (those below 1024) may be reserved by your system.
 
 * `XRES`: Screen resolution and color depth.
 
@@ -77,13 +79,13 @@ where:
 
 ### Examples
 
-* Run the image, remove container from memory once finished the container (`--rm`); map VNC port to 5900 (`-p 5900:5900`) and SSH port to 2222 (`-p 2222:22`):
+* Tipical usage, no shared directories: run the image, remove container from memory once finished the container (`--rm`); map VNC port to 5900 (`-p 5900:5900`) and SSH port to 2222 (`-p 2222:22`):
 
 	```sh
 	$ docker run --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
 	```
 
-* Run image, remove container from memory once finished the container; map VNC port to 5900 and SSH port to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace` (`-v $HOME/...`):
+* Tipical usage, shared directories: run image, remove container from memory once finished the container; map VNC port to 5900 and SSH port to 2222; mount local `$HOME/workspace` on container's `/home/debian/workspace` (`-v $HOME/...`):
 
 	```sh
 	$ docker run --rm -p 5900:5900 -p 2222:22 -v $HOME/workspace:/home/debian/workspace rsolano/debian-slim-vnc

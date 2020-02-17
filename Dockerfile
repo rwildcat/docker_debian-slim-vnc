@@ -1,6 +1,6 @@
 # R. Solano <ramon.solano@gmail.com>
 
-FROM debian:10.0-slim
+FROM debian:10.2-slim
 
 # default screen size
 ENV XRES=1280x800x24
@@ -46,14 +46,17 @@ ADD etc /etc
 # customizations
 
 # personal config files
-ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
+ADD config/gtkrc-2.0 /home/debian/.gtkrc-2.0
 ADD config/xscreensaver /home/debian/.xscreensaver
-RUN chown -R debian:debian /home/debian/.config /home/debian/.xscreensaver
+ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
 
 # enable user aliases
 RUN cd /home/debian \
-	&& sed 's/#alias/alias/'< .bashrc > .bashrc \
+	&& sed -i 's/#alias/alias/' .bashrc  \
 	&& echo "alias lla='ls -al'" >> .bashrc
+
+# set owner
+RUN chown -R debian:debian /home/debian/.*
 
 # ports
 EXPOSE 22 5900
