@@ -16,6 +16,13 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& apt-get install -qy sudo supervisor vim openssh-server apt-utils \
 	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin xscreensaver \
 	\
+	# fix LC_ALL: cannot change locale (en_US.UTF-8)
+	locales \
+	&& echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
+	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+	&& echo "LANG=en_US.UTF-8" > /etc/locale.conf \
+	&& locale-gen en_US.UTF-8 \
+	\
 	# keep it slim
 	&& apt-get remove -qy light-locker gnome-icon-theme gnome-themes-standard \
 	gnome-accessibility-themes gnome-themes-standard-data \

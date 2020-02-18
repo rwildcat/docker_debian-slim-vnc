@@ -1,10 +1,10 @@
 # Debian (slim) VNC
 
-A lightweight (631 MB) graphical Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides a graphical desktop (Xfce4) via VNC, and SSH.
+A lightweight (650 MB) graphical Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides a graphical desktop (Xfce4) via VNC, and SSH.
 
 *Ramon Solano (ramon.solano at gmail.com)*
 
-**Last update**: Feb/17/2020.  
+**Last update**: Feb/18/2020.  
 **Base image**: Debian 10.2 slim (buster-20200130)
 
 
@@ -21,9 +21,9 @@ User/pwd:
 * root / debian
 * debian / debian (sudoer)
 
-## Synopsis
+## Usage (synopsis)
 
-1. Download (*pull*) the image from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc) (optional):
+1. Download (*pull*) the image from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc) (optional: it will be first downloaded by the `docker run` command if not previosuly existing):
 
    ```sh
    $ docker pull rsolano/debian-slim-vnc
@@ -31,13 +31,23 @@ User/pwd:
 
 2. Run the container (the image will be *pulled* first if not previously downloaded).
 
-	For example, to run an ephemeral VNC session (port 5900):
+	For example:
 
-	```sh
-   $ docker run --rm -p 5900:5900 rsolano/debian-slim-vnc
-   ```
+	* To run an ephemeral VNC session (port 5900):
+
+		```sh
+	   $ docker run --rm -p 5900:5900 rsolano/debian-slim-vnc
+	   ```
+	   
+	* To run an ephemeral VNC + SSH session (port 5900 and 2222):
+
+		```sh
+	   $ docker run --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
+	   ```
    
-  3. Connect to the virtual computer using a VNC viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)), port 5900. As the remote VNC port (5900) was forwarded to the local host (`-p 5900:5900`), you can connect to the lcoalhost:
+3. Connect to the virtual computer using a VNC viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)) to local or remote port 5900.
+
+	**Note**: As the remote VNC port 5900 was forwarded to the local host (by `-p 5900:5900`), you can connect to the lcoalhost as well):
 
 	```
 	localhost:5900
@@ -57,7 +67,7 @@ $ cd docker_debian-slim-vnc
 $ docker build -t rsolano/debian-slim-vnc .
 ```
 
-## To run the container
+## Usage (full syntax)
 
 To run the container, you can just issue the `$ docker run <image-name>` command. The image will be first *pulled* if it not previously done:
 
@@ -133,7 +143,7 @@ EXAMPLES:
 Once VNC is tunneled through SSH, you can connect your VNC viewer to you specified localhot port (*e.g.* port 5900 as in this examples).
 
 
-## To stop container
+## To stop the container
 
 * If running an interactive session:
 
