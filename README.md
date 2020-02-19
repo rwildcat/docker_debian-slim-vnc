@@ -4,7 +4,7 @@ A lightweight (650 MB) graphical Linux workstation based on [Debian](https://hub
 
 *Ramon Solano (ramon.solano at gmail.com)*
 
-**Last update**: Feb/18/2020.  
+**Last update**: Feb/19/2020.  
 **Base image**: Debian 10.2 slim (buster-20200130)
 
 

@@ -13,6 +13,7 @@ ENV TZ_CITY Mexico_City
 RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	&& apt-get update -q \
+	&& apt-get upgrade -qy \
 	&& apt-get install -qy sudo supervisor vim openssh-server apt-utils \
 	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin xscreensaver \
 	\
@@ -60,8 +61,14 @@ ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/termina
 # enable user aliases
 RUN cd /home/debian \
 	&& sed -i 's/#alias/alias/' .bashrc  \
-	&& echo "alias lla='ls -al'" >> .bashrc
-
+	&& echo "alias lla='ls -al'" 		>> .bashrc \
+	&& echo "alias llt='ls -ltr'"  		>> .bashrc \
+	&& echo "alias llta='ls -altr'" 	>> .bashrc \
+	&& echo "alias llh='ls -lh'" 		>> .bashrc \
+	&& echo "alias lld='ls -l|grep ^d'" >> .bashrc \
+	&& echo "alias hh=history" 			>> .bashrc \
+	&& echo "alias hhg='history|grep -i" '"$@"' "'" >> .bashrc
+	
 # set owner
 RUN chown -R debian:debian /home/debian/.*
 
