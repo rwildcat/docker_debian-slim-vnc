@@ -1,35 +1,38 @@
 # Debian (slim) VNC
 
-A lightweight (650 MB) graphical Linux workstation based on [Debian](https://hub.docker.com/_/debian)-slim. Provides a graphical desktop (Xfce4) via VNC, and SSH.
+A lightweight (639 MB) Linux workstation based on [Debian](https://www.debian.org). Provides a **graphical desktop**, and **VNC** and **SSH** access.
 
 *Ramon Solano (ramon.solano at gmail.com)*
 
-**Last update**: Feb/19/2020.  
-**Base image**: Debian 10.2 slim (buster-20200130)
+**Last update**: Aug/17/2020.  
+**Base image**: [Debian 10.5 slim (buster-20200803-slim)]((https://hub.docker.com/_/debian))
 
 
 ## Main packages
 
-* xfce4   : Graphic desktop environment
-* x11vnc  : X vnc server
-* sshd    : SSH server
+* **xfce4**   : Graphic desktop environment
+* **x11vnc**  : X vnc server
+* **sshd**    : SSH server
 
 ## Users
 
-User/pwd:
 
-* root / debian
-* debian / debian (sudoer)
+| User   | pwd    |
+| ------ | ------ |
+| root   | debian |
+| debian | debian |
 
 ## Usage (synopsis)
 
-1. Download (*pull*) the image from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc) (optional: it will be first downloaded by the `docker run` command if not previosuly existing):
+1. (Optional) Download (*pull*) the image from its [docker hub repository](https://cloud.docker.com/u/rsolano/repository/docker/rsolano/debian-slim-vnc). 
+
+	If this step is not done first and the image does not previously exists in your local computer, the image will be downloaded later by the `docker run` command:
 
    ```sh
    $ docker pull rsolano/debian-slim-vnc
    ```
 
-2. Run the container (the image will be *pulled* first if not previously downloaded).
+2. Run the container.
 
 	For example:
 
@@ -45,12 +48,20 @@ User/pwd:
 	   $ docker run --rm -p 5900:5900 -p 2222:22 rsolano/debian-slim-vnc
 	   ```
    
-3. Connect to the virtual computer using a VNC viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)) to local or remote port 5900.
+3. Connect to the virtual computer using a VNC viewer (such as the [RealVNC viewer](https://www.realvnc.com/en/connect/download/viewer/)).
 
-	**Note**: As the remote VNC port 5900 was forwarded to the local host (by `-p 5900:5900`), you can connect to the lcoalhost as well):
+	**Note**: As the remote VNC port 5900 was forwarded to the local host port 5900 (by `-p 5900:5900`), you can connect to:
 
 	```
 	localhost:5900
+	```
+	
+4. Connect to the virtual computer using a SSH connection.
+
+	**Note**: As the remote SSHD port 22 was forwarded to the local host port 2222 (by `-p 2222:22`), you can connect to:
+	
+	```sh
+	$ ssh debian@localhost:2222
 	```
 
 
@@ -67,6 +78,8 @@ $ cd docker_debian-slim-vnc
 $ docker build -t rsolano/debian-slim-vnc .
 ```
 
+---
+
 ## Usage (full syntax)
 
 To run the container, you can just issue the `$ docker run <image-name>` command. The image will be first *pulled* if it not previously done:
@@ -74,7 +87,7 @@ To run the container, you can just issue the `$ docker run <image-name>` command
 **Full syntax:**
 
 ```sh
-$ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-v LDIR:DIR] rsolano/debian-slim-vnc
+$ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-e TZ_AREA={TZArea}] [-e TZ_CITY={TZCity}]  [-v LDIR:DIR] rsolano/debian-slim-vnc
 ```
 
 where:
@@ -83,7 +96,11 @@ where:
 
 * `LSSHPORT`: local SSH port for attaching remote SSH port 22. You may need to use a *non reserved* port such as port 2222. *Well known ports* (those below 1024) may be reserved by your system.
 
-* `XRES`: Screen resolution and color depth.
+* `XRES`: Screen resolution and color depth. Default: `1200x800x24`
+
+* `TZ_AREA`: Local Timezone area, e.g. `Etc`, `America`, etc.
+
+* `TZ_CITY`: Local timezone city, e.g. `UTC`, `Mexico_City`, etc.
 
 * `LDIR:DIR`: Local directory to mount on container. `LDIR` is the local directory to export; `DIR` is the target dir on the container.  Both sholud be specified as absolute paths. For example: `-v $HOME/worskpace:/home/debian/workspace`.
 

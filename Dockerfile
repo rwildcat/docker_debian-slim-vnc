@@ -1,21 +1,20 @@
 # R. Solano <ramon.solano@gmail.com>
 
-FROM debian:10.2-slim
+FROM debian:10.5-slim
 
 # default screen size
 ENV XRES=1280x800x24
 
 # tzdata settings
-ENV TZ_AREA America
-ENV TZ_CITY Mexico_City
+ENV TZ_AREA=Etc
+ENV TZ_CITY=UTC
 
 # update and install software
 RUN export DEBIAN_FRONTEND=noninteractive  \
-	&& ln -fs /usr/share/zoneinfo/${TZ_AREA}/${TZ_CITY} /etc/localtime \
 	&& apt-get update -q \
 	&& apt-get upgrade -qy \
-	&& apt-get install -qy sudo supervisor vim openssh-server apt-utils \
-	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin xscreensaver \
+	&& apt-get install -qy apt-utils sudo supervisor vim openssh-server \
+	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin  \
 	\
 	# fix LC_ALL: cannot change locale (en_US.UTF-8)
 	locales \
@@ -25,11 +24,9 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& locale-gen en_US.UTF-8 \
 	\
 	# keep it slim
-	&& apt-get remove -qy light-locker gnome-icon-theme gnome-themes-standard \
-	gnome-accessibility-themes gnome-themes-standard-data \
-	pulseaudio pulseaudio-utils \
-	xserver-xorg-input-wacom xserver-xorg-legacy  xserver-xorg-video-amdgpu \
-	xserver-xorg-video-ati xserver-xorg-video-intel \
+	&& apt-get remove -qy light-locker gnome-accessibility-themes \
+	pulseaudio pulseaudio-utils xserver-xorg-input-wacom xserver-xorg-legacy \
+	xserver-xorg-video-amdgpu xserver-xorg-video-ati xserver-xorg-video-intel \
 	xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-radeon \
 	xserver-xorg-video-vesa xserver-xorg-video-vmware \
 	\
@@ -55,11 +52,11 @@ ADD etc /etc
 
 # personal config files
 ADD config/gtkrc-2.0 /home/debian/.gtkrc-2.0
-ADD config/xscreensaver /home/debian/.xscreensaver
 ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
 
-# enable user aliases
+# TZ, aliases
 RUN cd /home/debian \
+	&& echo 'export TZ=/usr/share/zoneinfo/$TZ_AREA/$TZ_CITY' >> .bashrc \
 	&& sed -i 's/#alias/alias/' .bashrc  \
 	&& echo "alias lla='ls -al'" 		>> .bashrc \
 	&& echo "alias llt='ls -ltr'"  		>> .bashrc \
