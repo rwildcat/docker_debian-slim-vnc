@@ -1,5 +1,3 @@
-# R. Solano <ramon.solano@gmail.com>
-
 FROM debian:10.5-slim
 
 # default screen size
@@ -12,9 +10,10 @@ ENV TZ_CITY=UTC
 # update and install software
 RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& apt-get update -q \
-	&& apt-get upgrade -qy \
-	&& apt-get install -qy apt-utils sudo supervisor vim openssh-server \
-	xvfb x11vnc xfce4 xfce4-terminal xfce4-xkb-plugin  \
+	&& apt-get install -qy --no-install-recommends \
+	apt-utils sudo supervisor vim openssh-server \
+	xserver-xorg xvfb x11vnc dbus-x11 \
+	xfce4 xfce4-terminal xfce4-xkb-plugin  \
 	\
 	# fix LC_ALL: cannot change locale (en_US.UTF-8)
 	locales \
@@ -22,13 +21,6 @@ RUN export DEBIAN_FRONTEND=noninteractive  \
 	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
 	&& echo "LANG=en_US.UTF-8" > /etc/locale.conf \
 	&& locale-gen en_US.UTF-8 \
-	\
-	# keep it slim
-	&& apt-get remove -qy light-locker gnome-accessibility-themes \
-	pulseaudio pulseaudio-utils xserver-xorg-input-wacom xserver-xorg-legacy \
-	xserver-xorg-video-amdgpu xserver-xorg-video-ati xserver-xorg-video-intel \
-	xserver-xorg-video-nouveau xserver-xorg-video-qxl xserver-xorg-video-radeon \
-	xserver-xorg-video-vesa xserver-xorg-video-vmware \
 	\
 	# cleanup and fix
 	&& apt-get autoremove -y \
@@ -50,9 +42,10 @@ ADD etc /etc
 
 # customizations
 
-# personal config files
+# user config files
 ADD config/gtkrc-2.0 /home/debian/.gtkrc-2.0
 ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
+ADD config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml /home/debian/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
 # TZ, aliases
 RUN cd /home/debian \

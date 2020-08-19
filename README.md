@@ -1,10 +1,10 @@
 # Debian (slim) VNC
 
-A lightweight (639 MB) Linux workstation based on [Debian](https://www.debian.org). Provides a **graphical desktop**, and **VNC** and **SSH** access.
+A lightweight (431 MB) Linux workstation based on [Debian](https://www.debian.org). Provides a **graphical desktop** accesible via **VNC** and **SSH**.
 
 *Ramon Solano (ramon.solano at gmail.com)*
 
-**Last update**: Aug/17/2020.  
+**Last update**: Aug/18/2020.  
 **Base image**: [Debian 10.5 slim (buster-20200803-slim)]((https://hub.docker.com/_/debian))
 
 
@@ -14,13 +14,14 @@ A lightweight (639 MB) Linux workstation based on [Debian](https://www.debian.or
 * **x11vnc**  : X vnc server
 * **sshd**    : SSH server
 
-## Users
 
+## Users
 
 | User   | pwd    |
 | ------ | ------ |
 | root   | debian |
 | debian | debian |
+
 
 ## Usage (synopsis)
 
@@ -61,7 +62,7 @@ A lightweight (639 MB) Linux workstation based on [Debian](https://www.debian.or
 	**Note**: As the remote SSHD port 22 was forwarded to the local host port 2222 (by `-p 2222:22`), you can connect to:
 	
 	```sh
-	$ ssh debian@localhost:2222
+	$ ssh -p 2222 debian@localhost
 	```
 
 
@@ -87,7 +88,7 @@ To run the container, you can just issue the `$ docker run <image-name>` command
 **Full syntax:**
 
 ```sh
-$ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-e TZ_AREA={TZArea}] [-e TZ_CITY={TZCity}]  [-v LDIR:DIR] rsolano/debian-slim-vnc
+$ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-e TZ_AREA={tzarea}] [-e TZ_CITY={tzcity}]  [-v LDIR:DIR] rsolano/debian-slim-vnc
 ```
 
 where:
@@ -211,27 +212,31 @@ Once VNC is tunneled through SSH, you can connect your VNC viewer to you specifi
 
 ### File contents:    
 
-	[supervisord]
-	nodaemon = true
-	user = root
-	#loglevel = debug
+```
+[supervisord]
+nodaemon = true
+user = root
+#loglevel = debug
+
+[program:sshd]
+command = /usr/sbin/sshd -D
+
+[program:xvfb]
+command = /usr/bin/Xvfb :1 -screen 0 %(ENV_XRES)s
+priority=100
+
+[program:x11vnc]
+environment = DISPLAY=":1",XAUTHLOCALHOSTNAME="localhost"
+command=/usr/bin/x11vnc -repeat -xkb -noxrecord -noxfixes -noxdamage -wait -permitfiletransfer
+autorestart = true
+priority=200 
+
+[program:startxfce4]
+environment=USER="debian",HOME="/home/debian",DISPLAY=":1"
+command=/usr/bin/startxfce4
+autorestart = true
+directory = /home/debian
+user=debian
+priority=300
+```
 	
-	[program:sshd]
-	command = /usr/sbin/sshd -D
-	
-	[program:xvfb]
-	command = /usr/bin/Xvfb :1 -screen 0 %(ENV_XRES)s
-	priority=100
-	
-	[program:x11vnc]
-	environment = DISPLAY=":1",XAUTHLOCALHOSTNAME="localhost"
-	command=/usr/bin/x11vnc -repeat -xkb -noxrecord -noxfixes -noxdamage -wait 10 -shared -permitfiletransfer -tightfilexfer
-	autorestart = true
-	priority=200
-	
-	[program:startxfce4]
-	environment=USER="debian",HOME="/home/debian",DISPLAY=":1"
-	command=/usr/bin/startxfce4
-	directory = /home/debian
-	user=debian
-	priority=300
