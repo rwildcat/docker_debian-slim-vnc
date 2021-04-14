@@ -88,7 +88,7 @@ To run the container, you can just issue the `$ docker run <image-name>` command
 **Full syntax:**
 
 ```sh
-$ docker run [-it] [--rm] [--detach] [-h HOSTNAME] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-e TZ_AREA={tzarea}] [-e TZ_CITY={tzcity}]  [-v LDIR:DIR] rsolano/debian-slim-vnc
+$ docker run [-it] [--rm] [--detach] [-h {HOSTNAME}] -p LVNCPORT:5900 -p LSSHPORT:22 [-e XRES=1280x800x24] [-e TZ={AREA}/{CITY}]  [-v LDIR:DIR] rsolano/debian-slim-vnc
 ```
 
 where:
@@ -99,9 +99,7 @@ where:
 
 * `XRES`: Screen resolution and color depth. Default: `1200x800x24`
 
-* `TZ_AREA`: Local Timezone area, e.g. `Etc`, `America`, etc.
-
-* `TZ_CITY`: Local timezone city, e.g. `UTC`, `Mexico_City`, etc.
+* `TZ`: Local Timezone area/city, e.g. `Etc/UTC`, `America/Mexico_City`, etc. Default: `Etc/UTC`
 
 * `LDIR:DIR`: Local directory to mount on container. `LDIR` is the local directory to export; `DIR` is the target dir on the container.  Both sholud be specified as absolute paths. For example: `-v $HOME/worskpace:/home/debian/workspace`.
 
