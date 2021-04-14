@@ -1,11 +1,10 @@
-FROM debian:10.5-slim
+FROM debian:10.9-slim
 
 # default screen size
 ENV XRES=1280x800x24
 
-# tzdata settings
-ENV TZ_AREA=Etc
-ENV TZ_CITY=UTC
+# default tzdata
+ENV TZ=Etc/UTC
 
 # update and install software
 RUN export DEBIAN_FRONTEND=noninteractive  \
@@ -43,13 +42,14 @@ ADD etc /etc
 # customizations
 
 # user config files
-ADD config/gtkrc-2.0 /home/debian/.gtkrc-2.0
+#ADD config/gtkrc-2.0 /home/debian/.gtkrc-2.0
+#ADD config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml /home/debian/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml
 ADD config/xfce4/terminal/terminalrc /home/debian/.config/xfce4/terminal/terminalrc
 ADD config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml /home/debian/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
 
 # TZ, aliases
 RUN cd /home/debian \
-	&& echo 'export TZ=/usr/share/zoneinfo/$TZ_AREA/$TZ_CITY' >> .bashrc \
+	&& echo 'export TZ=/usr/share/zoneinfo/$TZ' >> .bashrc \
 	&& sed -i 's/#alias/alias/' .bashrc  \
 	&& echo "alias lla='ls -al'" 		>> .bashrc \
 	&& echo "alias llt='ls -ltr'"  		>> .bashrc \

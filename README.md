@@ -1,11 +1,11 @@
 # Debian (slim) VNC
 
-A lightweight (431 MB) Linux workstation based on [Debian](https://www.debian.org). Provides a **graphical desktop** accesible via **VNC** and **SSH**.
+A lightweight (432 MB) Linux workstation based on [Debian](https://www.debian.org). Provides a **graphical desktop** accesible via **VNC** and **SSH**.
 
 *Ramon Solano (ramon.solano at gmail.com)*
 
-**Last update**: Aug/18/2020.  
-**Base image**: [Debian 10.5 slim (buster-20200803-slim)]((https://hub.docker.com/_/debian))
+**Last update**: Apr/14/2021   
+**Base image**: [Debian 10.9-slim (buster-20210408-slim)]((https://hub.docker.com/_/debian))
 
 
 ## Main packages
